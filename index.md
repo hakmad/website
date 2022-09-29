@@ -1,4 +1,4 @@
 title: Index
 
-[Hello, World!](blog/hello-world.html) (2022-09-27)
+[Hello, World!](blog/hello-world) (2022-09-29)
 
