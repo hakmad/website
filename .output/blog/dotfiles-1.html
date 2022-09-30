@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dotfiles, Part 1</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../content/stylesheet.css">
+<link rel="icon" type="image/x-icon" href="../content/images/favicon.ico">
+</head>
+<body>
+<main>
+<nav>
+<h1>Hakmad</h1>
+<a href="../index">Index</a>
+<br>
+<a href="../about">About</a>
+<br>
+</nav>
+<article>
+<h1>Dotfiles, Part 1</h1>
+<p>Written on: <time datetime=2022-09-30>2022-09-30</time></p>
+
+<p>This series of posts is about the dotfiles that I use on my personal system. I
+don't intend for this to be a guide on how to rice a system, but instead as a
+document that explains why I made certain decisions when doing certain things.
+I don't think that this will be read by anyone other than me anyway.</p>
+<p>This first post will focus on the core parts of my system:</p>
+<ul>
+<li>Operating system</li>
+<li><code>systemd-boot</code></li>
+<li>Kernel options and <code>mkinitcpio</code></li>
+<li>Other miscellaneous things I've configured</li>
+</ul>
+<p>The next post(s) will focus on the moving parts of my system, things like <code>bash</code>
+and <code>qutebrowser</code>. I might also have a post detailing the hot mess of scripts
+that I use to hold everything together, who knows. :D</p>
+<h2>Operating System</h2>
+<p>I chose <a href="https://archlinux.org">Arch Linux</a> as my OS. The reasons are simple:</p>
+<ul>
+<li>It's simple and easy to configure</li>
+<li>It's up-to-date and packages are almost always available (either through the
+  main repos or the <a href="https://aur.archlinux.org">AUR</a></li>
+<li>It's focused on pragmatism rather than philosophy</li>
+<li>It's <em>very</em> well documented - take a look at the
+  <a href="https://wiki.archlinux.org">wiki</a></li>
+</ul>
+<p>I think the wiki is probably the best part of Arch. It's detailed, contains
+pages on almost everything, and the best part is that most of the pages are
+distro-agnostic. The content of the articles applies to almost every Linux
+distribution, usually with either no or very little tweaking (mostly package
+names and filepaths). I was initially drawn to Arch because the repos were more
+up to date than the distro I was using - see below for details - but I've stuck
+around because of the wiki.</p>
+<p>Some may argue that <code>pacman</code> (the <strong>pac</strong>akge <strong>man</strong>ager) is difficult to use,
+or that the installation process is obtuse - to some extent, they're right.
+Some of the options in <code>pacman</code> are named confusingly (why is it <code>-S</code>/sync
+instead of <code>-I</code>/install?) and the installation process could be automated, but
+when you dig into it a little bit, you'll begin to appreciate these quirks.
+<code>-S</code> is used because it's not just used to install, but also to update packages
+and keep them up to date with the remote repos. I think that's pretty neat.</p>
+<p>As for the installation process - I think it's unique and helps relative
+newbies (like myself) understand the different parts of the system and how they
+all work in tandem. Plus, if you know how to write Bash scripts, it's pretty
+trivial to automate the process yourself. I think there's also a
+script/installer now too, which is useful (I haven't used it myself so I can't
+really comment on it).</p>
+<p>I've only seriously used one other Linux distribution before, and that was
+<a href="https://debian.org">Debian</a>. While Debian is nice, I often found that it was
+out of date, which meant that software I wanted to use was either not available
+or very buggy, and their stance on free software, while respectable, often
+meant I couldn't really use my WiFi card. That's not to dunk on Debian at all -
+it was my first distro, so I owe it a lot in terms of what I learnt. I also
+have a huge amount of respect for the Debian project as a whole. This server
+actually runs Debian! I would say it's definitely more suited to a server
+environment than a daily driver, though I do wish
+<a href="https://caddyserver.com">Caddy</a> was available from the main repos.</p>
+<h2><code>systemd-boot</code></h2>
+<p>To boot my system, I use <code>systemd-boot</code>. I chose this for 2 reasons:</p>
+<ul>
+<li>It's very easy to configure</li>
+<li>It has a simpler/less complicated UI</li>
+</ul>
+<p>Initially, I used GRUB. GRUB is cool but it's also got a very heavy UI
+(relative to <code>systemd-boot</code>), and configuring it is...just take a look at the
+wiki for <a href="https://wiki.archlinux.org/title/GRUB#Custom_grub.cfg">creating custom
+entries</a>. It's not
+great. Configuring <code>systemd-boot</code> on the other hand, is <a href="https://wiki.archlinux.org/title/Systemd-boot#Configuration">super
+simple</a>. And it
+looks so much neater than GRUB, which is a priority for me.</p>
+<p>(You'll notice this a lot - I go to strange lengths just to make something
+"nicer". It's not healthy.)</p>
+<p>There are 2 quirks I want to mention about <code>systemd-boot</code>. The first is that if
+you set an option with <code>bootctl</code>, you need to unset it afterwards because that
+option will:</p>
+<ol>
+<li>Persist</li>
+<li>Take priority over any configuration files</li>
+</ol>
+<p>The other quirk (I guess it's not really a quirk) is that for whatever reason,
+the developers have started changing around the UI - there's this big white bar
+across the middle, the options are presented in reverse order, it's weird. As a
+result, I've configured my <code>systemd-boot</code> to not actually show anything during
+boot, it just boots straight into Arch. If I want to use Windows (I dual boot
+Arch and Windows), I press (read: spam like I'm Rowan Atkinson at the 2012
+Olympics Opening Ceremony) F12 to bring up my UEFI/BIOS menu, and then select
+Windows from that. It's a bit annoying, but:</p>
+<ol>
+<li>It's faster (!)</li>
+<li>It looks neater (see above)</li>
+</ol>
+<h2>Kernel options and <code>mkinitcpio</code></h2>
+<p>I don't know if kernel options actually count as ricing (most of these are
+aesthetic) or not but I'll put this here anyway. I've added the following
+options to my kernel, for the sole purpose of not showing anything during boot:</p>
+<pre><code>... quiet loglevel=3 rd.systed.show_status=auto rd.udev.log_priority=3 ...
+</code></pre>
+<p>See <a href="https://wiki.archlinux.org/title/Silent_boot">this page</a> on why I chose
+these options. In a nutshell, they make the system a lot quieter when starting
+up, and it looks so much cleaner.</p>
+<p>I've also configured <code>mkinitcpio</code> to <em>not</em> run <code>fsck</code> on bootup and to load the
+<code>i915</code> module early. Not running <code>fsck</code> is to make the boot process more quiet
+(again) and loading <code>i915</code> earlier is done to make the kernel modeset much
+earlier in the boot process. This is done so that the font that I use at TTY is
+set correctly, because sometimes what happens is that the system boots, goes to
+TTY, and <em>then</em> modesets, which is really weird and also resets the font back
+to the ugly default font. Anyway, this solves my issue.</p>
+<p>(Loading a kernel module, not because it makes something faster or for some
+actual productive benefit, but to set a <em>font</em>. Told you it wasn't healthy.)</p>
+<h2>Other miscellaneous things I've configured</h2>
+<p>I've changed some other random bits and bobs. This list briefly describes them
+all:</p>
+<ul>
+<li>Configuring <code>/etc/sysctl.d/20-quiet-printk.conf</code> to result in the most
+  quiet/silent boot possible (see above).</li>
+<li>Setting <code>/etc/issue</code> to the clear sequence to clear the screen just before I
+  log in and after I logout (cleaner TTY).</li>
+<li>Setting <code>/etc/motd</code> to an empty string (again, cleaner TTY).</li>
+<li>Setting the console font to Terminus (Terminus is my favourite font). :D</li>
+<li>Setting the console keyboard to the GB/UK layout (I use a UK layout keyboard).</li>
+</ul>
+<p>Again, like most of my system, these choices are mostly aesthetic and never
+actually for extra productivity (I like to think that working in a system that
+feels more homely makes me more productive but the reality is that I'm just
+lazy).</p>
+<h2>Conclusion</h2>
+<p>That concludes this post! Next time I'll focus on my desktop applications, the
+things that I use every day. I hope to see you then!</p>
+</article>
+</main>
+</body>
+</html>
