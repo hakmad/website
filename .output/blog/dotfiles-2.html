@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dotfiles, Part 2</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../content/stylesheet.css">
+<link rel="icon" type="image/x-icon" href="../content/images/favicon.ico">
+</head>
+<body>
+<main>
+<nav>
+<h1>Hakmad</h1>
+<a href="../index">Index</a>
+<br>
+<a href="../about">About</a>
+<br>
+</nav>
+<article>
+<h1>Dotfiles, Part 2</h1>
+<p>Written on: <time datetime=2022-10-01>2022-10-01</time></p>
+
+<p>Welcome back to the second post in this series about my personal dotfiles! This
+post will be focused on my every day programs, which are:</p>
+<ul>
+<li>Bash</li>
+<li>SSH</li>
+<li>Git</li>
+<li>Vim</li>
+</ul>
+<p>I won't focus on the desktop applications I use just yet, nor will I talk about
+my desktop environment (it's not really a DE but I call it that). Those are
+topics for another time.</p>
+<h2>Bash</h2>
+<p>I use Bash as my shell. The reason for this is because Bash is <em>everywhere</em>. My
+phone, the servers my university uses to get us to do coursework, the server
+I'm using to serve this website (along with some other stuff), the list goes
+on. I could use another shell (in particular, Zsh seems very interesting) I'm
+content with Bash and don't have any serious reason to migrate. To be honest, I
+haven't tried out Zsh other than using it in the live installation environment
+- it was pretty cool and the tab completion was very nice, so maybe I'll give
+it a shot at some point.</p>
+<p>The other reason I'm sticking with Bash is because I also script in Bash quite
+a lot. I know that the interpreter can be set with the shebang line at the
+beginning of a script, so if I wanted to I could switch to another shell and
+keep all my Bash scripts, but I like consistency, and it just feels cleaner to
+me to have the shell I use on a daily basis be the same shell I use when
+writing scripts to perform certain tasks.</p>
+<p>Bash is configured through 2 main files: </p>
+<ul>
+<li><code>~/.bash_profile</code>, which is run when the user logs in (in my case, from TTY)</li>
+<li><code>~/.bashrc</code>, which is run when the user starts a new shell (e.g. a new
+  terminal emulator)</li>
+</ul>
+<p>My <code>~/.bash_profile</code> contains things that are set once and not changed after
+the user logs in. These include:</p>
+<ul>
+<li>Environment variables, like the <code>$EDITOR</code> I use by default, and the <code>$PATH</code>
+  to look for programs:<ul>
+<li>In particular, I've set my <code>$PATH</code> to search the current working
+  directory. This might be a bit of a security risk but it's more
+  ergonomical to type <code>a.out</code> instead of <code>./a.out</code> in my opinion.</li>
+</ul>
+</li>
+<li>Shell options (set with <code>shopt</code>)</li>
+<li>Starting X on login with <code>startx</code> - see
+  <a href="https://wiki.archlinux.org/title/Silent_boot#startx">this article</a> for
+  details</li>
+</ul>
+<p>My <code>~/.bashrc</code> contains things that might change from time to time, or are just
+generally more dynamic. These include:</p>
+<ul>
+<li>Sourcing some completion scripts (so I get better autocompletion)</li>
+<li>Aliases - things like <code>alias cp="cp -r"</code> which makes life so much easier</li>
+<li>Prompts<ul>
+<li>I've set <code>$PS1</code> to add a <code>R</code> before the actual prompt so I know if
+  I'm on a remote machine or not, which helps if the remote machine
+  also has my dotfiles setup on it</li>
+</ul>
+</li>
+</ul>
+<p>Finally, I also have an empty file <code>~/.hushlogin</code> which disables the login
+banner.</p>
+<p>Overall, I'm pretty happy with my current setup. I could add other things to
+Bash (functions seem pretty interesting) or switch entirely to a different
+shell but for now, this setup is:</p>
+<ol>
+<li>Minimal</li>
+<li>Stable</li>
+</ol>
+<p>Which is exactly what I want from something that provides such a core aspect of
+my system.</p>
+<h2>SSH</h2>
+<p>I haven't really configured much of my SSH setup, mostly just generating SSH
+keys with <code>ssh-keygen</code> and adding these to this server. I have, however,
+configured this server to be called just <code>server</code> on my personal computer, so
+all I have to do is <code>ssh server</code> and I'm presented with a remote connection to
+my server. It makes my life easier as I don't have to type out my username,
+hostname, the port the server listens to SSH on, and my password. It also helps
+with things like <code>scp</code>, especially the port option (<code>scp</code> uses <code>-P</code> as it's
+port option, which I always mess up as I think it's the same as <code>ssh</code> which
+uses <code>-p</code>). I'm fairly content with my SSH setup as it stands.</p>
+<h2>Git</h2>
+<p>Like SSH, I haven't really configured much of my own Git. Just my username and
+an email that GitHub provides so I don't get spam. Unlike SSH though, I think
+there are some useful options I could add to Git - in particular, aliases. I
+actually used to use aliases at one point, I would do <code>git l</code> and it would show
+the log. I got rid of them because they interfered with some of the other
+things I would do but I might add them back at some point (for example, to
+alias a particularly long command). We'll see. I might also change my email to
+something else, but I need to actually set up email on this server before I can
+do that.</p>
+<h2>Vim</h2>
+<p>Vim is my default text editor. I've been using for almost everything for just
+over a year now, and to be honest I've barely scratched the surface of what's
+possible. There are still so many things I could configure, packages I could
+add, <em>things to learn!</em> It's kind of exciting, but also a little overwhelming.</p>
+<p>My current Vim configuration sets up basic things like auto-indentation, line
+numbers, syntax highlighting, etc. and also adds a custom colour scheme. I'm
+still configuring it, there are a bunch of small things that still bother me
+(titles in Markdown are coloured with this weird flesh pink colour, I should
+probably change that), but other than that, I'd also like a more IDE-like setup
+from Vim.</p>
+<p>Things like better code completion would be awesome, especially for things like
+Java or LaTeX which have lots of boilerplate code (being able to type something
+like <code>\begin{environment}</code> and having the corresponding <code>\end{environment}</code>
+show up would be really helpful). Other things like
+<a href="https://github.com/junegunn/limelight.vim">limelight</a> for more focused
+writing, customising the status bar, adding a window on the side, setting
+maximum line widths depending on file type...there's just so much to do and
+customise that it is a bit scary and paralysing. I love it though. I'm hoping
+by the end of this year I can get a bit more seriously into Vim and <em>finally</em>
+set it up the way I like it, but don't count on it. :)</p>
+<h2>Conclusion</h2>
+<p>That concludes this post. Next post, I'll be focus on the actual desktop
+environment and desktop applications, and then finally the scripts. I hope you
+see you then!</p>
+</article>
+</main>
+</body>
+</html>
