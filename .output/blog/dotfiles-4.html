@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dotfiles, Part 4</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../content/stylesheet.css">
+<link rel="icon" type="image/x-icon" href="../content/images/favicon.ico">
+</head>
+<body>
+<main>
+<nav>
+<h1>Hakmad</h1>
+<a href="../index">Index</a>
+<br>
+<a href="../about">About</a>
+<br>
+</nav>
+<article>
+<h1>Dotfiles, Part 4</h1>
+<p>Written on: <time datetime=2022-10-05>2022-10-05</time></p>
+
+<p>Hello there! In this fourth post, I will talk about the desktop applications I
+use on a daily basis. These include:</p>
+<ul>
+<li>Alacritty (a terminal emulator)</li>
+<li>Qutebrowser (a graphical web browser)</li>
+<li>Zathura (a document viewer)</li>
+</ul>
+<p>I'll also talk briefly about TUI applications that I use and could use.</p>
+<h2>Design Thoughts</h2>
+<p>Before I get into the actual applications themselves, I want to talk about
+program designs that I like. I prefer TUI applications because these are almost
+always more customisable and easier to use/integrate into my current
+environment. However, the terminal is not always the best interface for
+interacting with certain content - websites and multimedia in general tend to
+be very difficult to view in a terminal. For applications where it is more
+practical to use graphical interface, I like the following features:</p>
+<ul>
+<li>customisability of the UI, in particular:<ul>
+<li>the ability to hide certain GUI aspects/have them show only when I
+  need them (e.g. status bars). This allows me to focus purely on the
+  content at hand, and avoids other distracting features.</li>
+<li>the ability to customise the font used - I <em>really</em> like Terminus,
+  and have it pretty much everywhere from the TTY to the command buffer
+  thing that Qutebrowser and Zathura use. As dumb as it sounds, not
+  having this can often be a non-starter for me. Thankfully, most of
+  the programs I use do allow you to customise the font.</li>
+</ul>
+</li>
+<li>Vim-like keybindings, in particular:<ul>
+<li><code>j</code> and <code>k</code> for scrolling around.</li>
+<li><code>:</code> to interact with the command buffer (or whatever the equivalent
+  might be.</li>
+</ul>
+</li>
+</ul>
+<p>These features are important to me because they allow nicer integration with
+the rest of my environment and feel more familiar/consistent with the rest of
+my desktop.</p>
+<p>One thing I will say that sucks quite a lot is having to move between different
+environments. I dual boot Windows and Arch, with Windows being used for some
+specific programs (accountancy software, Microsoft Office, and a handful of
+games) and Arch being used for everything else (and being my daily driver).
+When I'm working in Windows, I'll often hit a keybind or try to do something
+out of habit that doesn't work because Windows just doesn't provide that
+functionality. If I could, I would migrate entirely to Arch - the only real
+thing holding me back is the accountancy software - but it's just a bit
+annoying hopping back and forth between different environments. I suppose it
+helps that I use Windows a lot less than Arch, and when I'm using Windows I'm
+generally more relaxed. Just a random thought.</p>
+<h2>Terminal Emulators</h2>
+<p>I work almost exclusively in the terminal, so a good terminal emulator is
+essential. For me, that means:</p>
+<ul>
+<li>Minimal UI: just the prompt please, nothing else.</li>
+<li>Options to add padding.</li>
+<li>Customisable cursors.</li>
+<li>Clickable URLs.</li>
+</ul>
+<p>In the past, I used the following terminal emulators:</p>
+<ul>
+<li>Urxvt</li>
+<li>Xterm, Kitty and Terminator</li>
+<li>Termite</li>
+<li>Alacritty</li>
+</ul>
+<p>I'll talk about each of them briefly before focusing on Alacritty:</p>
+<h3>Urxvt</h3>
+<p>Like many people who got into ricing from the excellent <a href="https://www.youtube.com/watch?v=j1I63wGcvU4">i3 jumpstart video
+series</a>, I started with
+Urxvt (or rxvt-unicode). From the start, I did not like this terminal. What
+follows are the main pain points I had:</p>
+<ul>
+<li>Font declaration: to use a font with Urxvt, you need to specify the font name
+  (which is a pain to get a hold of) and also the spacing of the font, because
+  for whatever reason Urxvt likes to space the font characters out super wide.
+  At the time, I was using Iosevka and getting the spacing just right was such
+  a pain.</li>
+<li>Colours: configuring colours was a similar situation to configuring fonts,
+  though admittedly not as painful. It would have been so much nicer to use
+  hexadecimal syntax but no, apparently not.</li>
+<li>Copy/paste: copying something to the terminal was hard (though that was
+  because I was new to Linux/ricing), and copying something from the terminal
+  was impossible. Again this might have been because I was new but I hated
+  having to copy stuff off of the terminal with a passion.</li>
+<li>Configuration: maybe all of these issues would have been okay to deal with if
+  URXVT wasn't such a pain to configure itself. Firstly, understanding the
+  manual along with all the different options was so confusing, especially for
+  a beginner. Secondly, it uses <code>~/.Xresources</code>, so if you want to change a
+  single line of your configuration, you would have to   modify
+  <code>~/.Xresources</code>, then run <code>xrdb ~/.Xresources</code>, and <em>then</em> <strong>restart X</strong>.
+  Yes. Restart X, because apparently changes don't take effect until X is
+  restarted.</li>
+</ul>
+<p>Honestly I think I might have been okay with Urxvt for a bit longer if it
+hadn't been for how annoying it was to configure. Eventually, I had enough of
+how annoying it was to configure and how weird <em>literally any font</em> looked (why
+oh why does it have font spacing?) and I started looking for a new terminal
+emulator.</p>
+<h3>Xterm, Kitty and Terminator</h3>
+<p>I used these terminal emulators only very briefly, and moved quickly onto
+Termite. In short:</p>
+<ul>
+<li>I almost immediately dropped Xterm because it was also configured with
+  <code>~/.Xresources</code> as well.</li>
+<li>I dropped Kitty because I couldn't figure out how to make it do padding
+  nicely, and the cursor wasn't customisable.</li>
+<li>I honestly don't remember why I didn't go with Terminator. Maybe I was
+  already using Termite by then.</li>
+</ul>
+<h3>Termite</h3>
+<p>My initial reaction to Termite was the complete opposite of my initial reaction
+to Urxvt - I really loved this terminal, and I'm still a bit sad to see it go.
+Honestly, it had everything: easy configuration (and on the fly too!),
+clickable URLs, copy-paste that made (more) sense, and in general it just felt
+nicer to use. There were only 2 issues:</p>
+<ul>
+<li>SSH support wasn't all there, though that was easily fixable.</li>
+<li>Padding needed to be configured in the GTK CSS file, which was odd but
+  doable.</li>
+</ul>
+<p>Of course, we all know how the dance ended. <a href="https://github.com/thestinger/termite">Termite's developers stopped
+working on it and recommended Alacritty
+instead.</a> So once again I had to go
+terminal hopping.</p>
+<h3>Alacritty</h3>
+<p>I like this terminal emulator the best out of the lot I've tried, though it did
+take me a while to get over Termite.</p>
+<p>(Get over Termite? It's a terminal emulator, not my lover. Though I guess
+it's probably the closest thing I will have to one haha. :D)</p>
+<p>Configuring Alacritty is a breeze, it's fast, the padding is actually inside
+the configuration file (unlike Termite), there are hotkeys which is both odd
+and actually quite useful - I've got one that opens a new terminal in the
+current working directory - SSH plays nice, there's just so much going for it
+that I'd have to write an entire blog post for it. I'd definitely recommend it
+over pretty much any other terminal emulator out there.</p>
+<p>There is one quirk, and it only applies if you have multiple monitors which
+have different DPIs (which I used to - I now only use a single monitor, my
+laptop screen). Anyway, what would happen is that the padding would change
+randomly, without due reason. This was super frustrating because I had no clue
+what was causing it, but I have found a fix. Add the following to your
+Alacritty configuration file:</p>
+<pre><code>env:
+    WINIT_X11_SCALE_FACTOR: &quot;1&quot;
+    WINIT_HIDPI_FACTOR: &quot;1&quot;
+</code></pre>
+<p>I'll be honest, I don't know what this does (I think it forces the DPI to be
+one consistent setting across all monitors? I'm not sure) and I have no clue
+where I found it, so if you're reading this site as a way of finding out how to
+fix Alacritty...I really hope not!</p>
+<p>Regardless, like Arch, I think this is probably one of those things that I'll
+stick with for a very long time.</p>
+<h2>Web Browser</h2>
+<p>If you want a web browser with Vim like keybindings, you have 2 choices:</p>
+<ul>
+<li>Install a plugin on a browser you already use, like Vimium.</li>
+<li>Install Qutebrowser.</li>
+</ul>
+<p>I chose Qutebrowser. The reason being was that I don't really use a browser
+like most normal people do: I never save history, I never save passwords, if I
+want to view something later <em>I save a copy of the URL in a file with a brief
+note explaining what it is instead of using a bookmark</em>. I'm weird, but it also
+means I'm not tied down to any particular browser. And it also means I'm not
+going to trash the other options like I have been doing.</p>
+<p>(If anyone is reading this, I don't mean to be offensive. Chances are I'm a
+massive dumbass and I couldn't figure out how to use your software, so I chose
+to use something that made more sense to my small brain.)</p>
+<p>I'm also not qualified to talk about all of Qutebrowser, because (like Vim)
+there's still loads of things that I don't actually know about it. I really
+like it though, it's so fast that when I navigate to BBC it loads the
+international website before realising that I'm actually in the UK and loading
+the UK specific site. (Wait, maybe that means it's slow? I don't know). It's
+very customisable (literally everything from the hotkeys to the height of the
+status bar - I think), and it just feels so comfy to use. Again, another "use
+it for life" kind of software.</p>
+<h2>Zathura</h2>
+<p>Honestly it kind of feels like I'm just repeating myself. Zathura is fast, it's
+customisable, it gets out of your way. There are very useful functions
+(recoloring the PDF for night mode) and even more useful keybinds. It's, again,
+so comfy to use. If you're not using it, do yourself a favour and use it.</p>
+<h2>Conclusion</h2>
+<p>I feel like I spent too much of this post talking about terminal emulators and
+then like 2 seconds about everything else. Anyway, next post will be the last
+in this series and I will focus on the scripts (read duct tape) that augments
+stuff. I look forward to seeing you then!</p>
+</article>
+</main>
+</body>
+</html>

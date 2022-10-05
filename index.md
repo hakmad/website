@@ -1,5 +1,7 @@
 title: Index
 
+[Dotfiles, Part 4](blog/dotfiles-4) (2022-10-05)
+
 [Dotfiles, Part 3](blog/dotfiles-3) (2022-10-03)
 
 [Dotfiles, Part 2](blog/dotfiles-2) (2022-10-01)
