@@ -1,5 +1,7 @@
 title: Index
 
+[Revisiting OverTheWire Bandit](blog/revisiting-otw-bandit) (2022-10-17)
+
 [Dotfiles, Part 4](blog/dotfiles-4) (2022-10-05)
 
 [Dotfiles, Part 3](blog/dotfiles-3) (2022-10-03)

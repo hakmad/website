@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Revisiting OverTheWire Bandit</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../content/stylesheet.css">
+<link rel="icon" type="image/x-icon" href="../content/images/favicon.ico">
+</head>
+<body>
+<main>
+<nav>
+<h1>Hakmad</h1>
+<a href="../index">Index</a>
+<br>
+<a href="../about">About</a>
+<br>
+</nav>
+<article>
+<h1>Revisiting OverTheWire Bandit</h1>
+<p>Written on: <time datetime=2022-10-17>2022-10-17</time></p>
+
+<p>My about page says my interests include game development and cybersecurity.
+Despite that, all of my posts so far have been about my dotfiles, and really
+they've not even been that good. (I haven't forgotten about the last post about
+my scripts that I still need to write - I've been busy (read: lazy) so I
+haven't been writing as much recently). Until today! Sort of.</p>
+<p>A few years ago, when I first wanted to get into cybersecurity related stuff, I
+read a few guides and most of them suggested doing CTF challenges. At the time
+I was very green (I still am) and so I was looking around for beginner friendly
+things when I stumbled across <a href="https://overthewire.org">OverTheWire</a>. If you
+don't know, they host several wargames, which are essentially a series of CTF
+challenges where the flag for one challenge gives you access to the next. These
+are a really fun and hands-on way to learn, as you don't just do rote
+memorisation - you actually <em>apply</em> what you learnt. I enjoyed completing
+Bandit which is mostly focused on basics on Linux and some Git stuff. Recently,
+I've been trying to get back into this sort of thing so I figured I'd give it
+another shot. This post details my thoughts about Bandit having done it twice.</p>
+<p>Note: this post doesn't contain solutions. I'm pretty sure the flags change
+anyway, so there's no point in taking them from me. I also won't provide guides
+to how to complete challenges because:</p>
+<ol>
+<li>I'm dumb.</li>
+<li>Find them yourself.</li>
+<li>If you can't find them yourself, look at someone else's guide.</li>
+</ol>
+<p>Who am I kidding, who even reads this site haha.</p>
+<h2>The Good</h2>
+<p>If I had to describe my Bandit experience in one word, it'd be "weird". Or at
+least "different". In a good way.</p>
+<p>The very second level has a file that begins with a dash. You can't just <code>cat</code>
+it normally, you have to do some extra stuff to get the content out of the
+file. The twelfth level has a file that has been archived and compressed to the
+point where I'm pretty sure it's larger than the original size of the file. The
+25th and 33rd levels are my favourite, they were really weird - no spoilers,
+try them out and you'll see what I mean. :D</p>
+<p>My point is, it takes what you already know and subverts your expectations. It
+doesn't play by the rules, because it's trying to teach <em>you</em> to not play by
+the rules, to tinker and experiment, to break things. That sort of hacker
+spirit it's trying to imprint on you is something I think is quite important,
+beyond just the regular learning. Having the knowledge is one thing, but it's
+quite another to have the mindset and creativity to know where the
+vulnerabilities are and how to exploit them.</p>
+<h2>The Bad</h2>
+<p>Honestly? Not much! For a "Linux Basics" style wargame, I thought it was pretty
+solid. I think more could've been covered though, like creating files (though
+I'm not sure how you'd be able to trigger a flag from creating a file) and
+directories, symlinks, file permissions, redirection and pipes (this is a big
+one) and other related stuff. I'm not an expert though, so take that with a
+grain of salt.</p>
+<p>I would've appreciated better explanations for some of the challenges. I think
+the worst was probably 20, I didn't realise that <em>I'm</em> supposed to listen and
+connect at the same time, so I was trying to use <code>nmap</code> to find the port I
+needed to listen to. That might just be me though, so I'll leave it at that.</p>
+<h2>The Ugly</h2>
+<p>Again, not much to say here. In fact the only thing I didn't like was the fact
+it uses a non-standard SSH port (2220 instead of 22), though I guess it makes
+sense if they're running multiple wargames on the same machine. Me from a few
+years ago found it incredibly frustrating to type out the port number as well
+as the full URL, but me from today just added it to my SSH configuration. I
+will say it made me <em>very</em> frustrated when I got to the Git part, because I
+forgot what port I was supposed to be <code>clone</code>ing from.</p>
+<h2>Conclusion</h2>
+<p>Overall, if you're looking for a introduction to cybersecurity/hacking and
+aren't sure where to begin, try this. I'm not saying it's the best but it'll
+definitely scratch the itch that you're looking for and make you come back
+wanting for more. Which OverTheWire has. :)</p>
+<p>I'm going to be doing Natas and Krypton at some point, so when I do I'll post
+my thoughts on those. I actually started both of these after I did Bandit the
+first time around but...I never finished it. Hopefully I'll finish it this
+time!</p>
+</article>
+</main>
+</body>
+</html>
