@@ -1,0 +1,207 @@
+title: Dotfiles, Part 5
+date: 2022-10-20
+
+Finally! The fifth post where I talk about my scripts! Let's dive in. :D
+
+Generally speaking, I have two kinds of scripts - scripts that do GUI things
+(display popups, ask for user input, etc.) and other non-GUI scripts that do
+useful things (making backups, getting things from the AUR, and so on). This
+post is therefore split into two parts, the first focusing on the GUI related
+scripts and the second focusing on the non-GUI scripts.
+
+## GUI Related Scripts
+
+### Building Blocks
+
+For GUI related scripts, I use two tools:
+
+- `lemonbar` (with XFT support) - for displaying information.
+- `dmenu2` (which is `dmenu` with a bunch of patches applied) - for asking for
+  user input and running actions based on that.
+
+These two tools form the basis for most of the other scripts I wrote.
+
+### `popup.sh`
+
+This script creates a fairly simple popup using `lemonbar` and displays it on
+the screen. I wrote it to make it more convenient to produce consistent looking
+popups with some degree of flexibility for things like duration and what
+message to display on the screen. This is the main script that is used for
+displaying information on the screen, from audio levels to the current
+network to whether or not I need to plugin my battery. I used to manually
+specify the width of the popup by trying to guess how much space I'd need but I
+wrote an additional feature that automatically calculates the width based just
+on the message itself, which has led to much cleaner looking popups without a
+massive amount of extra space on the side. Unfortunately, I have no idea how I
+arrived at the values that I did or how I know they are correct - they just
+look pretty good compared to the other values and kind of make sense given the
+font size (it's *heavily* - almost completely - dependent on the size of the
+font, and I don't know how to work with fonts well). It looks nice though.
+
+Some improvements I should probably make to this script: an option to put it
+elsewhere on the screen. Right now, it places itself in the bottom left corner,
+which is nice, but my `dmenu` based scripts also put things in the bottom left
+corner, so if I try to run a program while my battery is low, I end up with the
+popup constantly displaying over the top of the input prompt for `dmenu`. Which
+isn't great.
+
+### `run.sh`
+
+This script is my start menu: it asks the user for a program to run and runs
+it. Originally, I used `dmenu-run`, which is the same thing but it pulls
+everything from `$PATH`, so I can do things like start CLI-only programs (I
+have no clue where the output goes to though). Technically, my script isn't any
+different - it just limits what the prompt is to a bunch of hardcoded entries.
+I should probably move those hardcoded entries somewhere else. Other than that,
+the script isn't anything particularly special.
+
+### `get-*.sh`
+
+All my `get-*.sh` scripts are scripts that I wrote to get "clean" output from
+other tools, like `amixer`. These tools often produce a lot of extra output
+that is hard to parse, and it's annoying to try to clean that output every time
+I want to display some information. These scripts are in fact non-GUI scripts,
+but I pipe their output to `popup.sh`, so they belong here.
+
+### `notify.sh`
+
+This script is a giant while loop that constantly checks 2 pieces of
+information:
+
+- Battery levels
+- Network information
+
+I'll be honest, I should probably move this to something else. I feel like a
+while loop in a Bash script of all things is probably the most inefficient
+(energy-wise) way to check for information. Also, testing the battery function
+was a pain because I had to wait for the battery to get low to make sure it
+actually worked.
+
+With all that being said, this script works, and it's stable. I will at some
+point in the future change it to be better, but for now it isn't broken.
+
+### `style.sh`
+
+Again, not really a GUI related script - or even an executable script for that
+matter. No, this is a script that contains a bunch of definitions for things
+like how big/small things should be, where they should be placed, and so on. I
+would place this information in a JSON file or something but all the scripts I
+work with are Bash scripts and it's a lot easier to just have those scripts
+source this one and then make sure not to use any conflicting variable names.
+That's rarely, if ever, a problem though.
+
+## Non-GUI Scripts
+
+### `aur.sh`
+
+`aur.sh` is a script that sort of acts like a package manager but specifically
+for the [AUR](https://aur.archlinux.org). I say acts like a package manager, to
+be honest it doesn't really do anything package manager-y - it can install
+stuff from the AUR, look things up on the AUR, and that's about it. It can also
+list packages that have been installed from the AUR, but that's using `pacman`.
+
+To be honest I put a lot of effort into making the search function look similar
+to what `pacman`s looks like, and also had a mini panic attack when it broke at
+some point (I think the API URL changed, so I was trying to `curl` the wrong
+thing). That being said I'm pretty proud of this feature so I like it a lot
+haha.
+
+I have some plans to develop this script further, hopefully into a more fully
+featured package manager thing that can do updates and stuff (and probably not
+written in Bash). That being said, the original reason I wrote this script is
+to make my life slightly easier when installing things from the AUR, and
+eventually things got out of hand (like they usually do) and I ended up
+developing several extra features that are supposed to "help" but really I just
+wrote them for fun and because I could.
+
+### `backup.sh`
+
+First of all, I don't use this as much as I should. Second off, I'm pretty sure
+that there are better ways to take backups of Linux systems. Thirdly, it's only
+useful on one system - my laptop - as my other devices don't use the same setup
+(to be fair, I don't have anything in the Termux environment on my phone and my
+server doesn't contain anything that isn't already available elsewhere).
+Fourthly, it's out of date: I have a new "standard" directory that I need to
+add and I also need to get rid of one of the directories that it backs up. With
+all that out of the way, here are some more interesting details. :)
+
+This script is a bit weird in that the while loop that I use to get the
+arguments doesn't really call a specific function depending on the argument
+(except for `-h`), instead it sets some options and then just runs a bunch of
+commands anyway. It's very similar to `aur.sh` in that I made this out of
+convenience (and then proceeded to never use it) and just kept hacking on it
+till it grew to the size it is now.
+
+The nice thing about it is that the output file is pretty much just my home
+directory, so after I finish running `install.sh` and `setup.sh` on a fresh
+install, I can just un-tar the tarball and I'm ready to go! I find it pretty
+cool anyway.
+
+### `fetch.sh`
+
+This script is purely for fun. There are no fancy arguments, no actual utility,
+it just shows a bit of information and then exits. Why did I write it? Because
+I could. Honestly, it's pretty neat exercise to try to get all the different
+pieces of information from the system (and also try to get it to work on
+all/most distros) (and get it to *not* show information when it shouldn't (like
+battery information)) (and also the colours are pretty cool).
+
+### `eduroam.sh` and `setup-usb.sh`
+
+I wrote these scripts because I couldn't be bothered to remember/look up stuff
+on StackOverflow to do a certain task. These scripts are essentially my way of
+just remembering what to do instead of doing it all from scratch again, and
+doing this is something that can be very helpful/save a lot of time. I can't
+find the exact answer I found on StackOverflow for connecting to `eduroam`
+networks but `setup-usb.sh` mostly comes from [this Arch wiki
+page](https://wiki.archlinux.org/title/USB_flash_installation_medium#Using_manual_formatting) 
+on setting up a live USB with a separate partition that can be used regularly.
+
+I put these two in the same category because in many ways they're opposites of
+each other. If you look at the commit history for both, you'll notice I
+contributed more to `setup-usb.sh` compared to `eduroam.sh`. The reason is
+simple: the code for setting up a USB in the manner I've described above is
+had changed according to the wiki page, so when I tried to use it in a few
+months time I ended up with a USB that wouldn't boot correctly. On the other
+hand, the method to connect to the `eduroam` network hadn't really changed.
+
+The point of this little rant is that a script you write as a method of
+remembering what you did that one time is only good to remember exactly what
+you did *that time*, and if something's changed, then it probably will be
+useless as an executable. That's not to say it's completely useless, and you
+can still use it as a building block for a more up-to-date script that works.
+
+### `mp3.sh`
+
+I think this might've been the first script I ever wrote - just to make it more
+convenient for me to download music. I've improved it a lot since I wrote it,
+with features like adding MP3 metadata, copying files to directories depending
+on the system (especially important on Android - similar to how what I do in
+`.bashrc` to *not* source the Bash completion scripts if running on Android - I
+should actually change that to look for where the Bash completion scripts *are*
+on Android) and so on. This script is very linear, similar to most of the other
+scripts in this section (except `aur.sh`), so there's not much special going on
+here.
+
+### `push-dotfiles.sh`
+
+For a while, this was the script I was most proud of. Looking back, there's a
+lot of things I could improve in this script - using `find` to iterate through
+files instead of doing a recursive function call (in Bash of all programming
+languages) is the one that stands out the most. I use this script to link my
+dotfiles so that they all stay up to date (rather than manually copying over
+all my dotfiles every time I make a change). It's well overdue for a change,
+and I think that's probably the most fun thing about writing scripts like this
+- you get to revisit them months or even years later and improve on them with
+(hopefully) more experience and knowledge.
+
+## Conclusion
+
+This post was a bit of a ramble, sorry about that. I would say I hope you
+learnt something, but:
+
+1. No one reads this but me.
+2. The only thing to learn here is that I really have a lot of crappy scripts
+   that need improving, and the only person learning that is me.
+
+Oh well. See you next time!
