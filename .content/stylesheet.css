@@ -1,39 +1,33 @@
 body {
 	margin: 0 auto;
 	
-	max-width: 960px;
+	max-width: 1200px;
 
-	background-color: #eee;
+	background-color: #222;
+	color: #eee;
 
 	font-family: sans-serif;
 }
 
-
 nav {
 	box-sizing: border-box;
 
-	padding: 20px 40px;
-	
-	background-color: #111;
-	color: #eee;
+	padding: 20px 20px;
+
+	border-bottom: 2px solid #eee;
 }
 
 article {
-	padding: 20px 40px;
+	padding: 20px 20px;
 }
 
-nav a {
+a {
 	color: #eee;
-}
-
-nav a:hover {
-	background-color: #eee;
-	color: #111;
 }
 
 a:hover {
-	background-color: blue;
-	color: #eee;
+	background-color: #eee;
+	color: #222;
 }
 
 img {
@@ -58,4 +52,19 @@ pre code {
 
 	background-color: #111;
 	color: #eee;
+}
+
+table {
+	margin: auto;
+
+	background-color: #111;
+
+	border-collapse: collapse;
+
+	border: 1px solid #eee;
+}
+
+th, td {
+	padding: 5px 10px;
+	border: 1px solid #eee;
 }
