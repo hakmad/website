@@ -8,11 +8,12 @@ import markdown
 md_extensions = ["meta", "tables", "fenced_code", "pymdownx.tilde"]
 
 posts_dir = "posts"
-template_dir = ".templates"
 output_dir = ".website"
 
-post_template = open(os.path.join(template_dir, "post.html"), "r").read()
-meta_template = open(os.path.join(template_dir, "meta.html"), "r").read()
+template_filename = ".template.html"
+template_file = open(template_filename, "r")
+template = template_file.read()
+template_file.close()
 
 index_post_entry = "[{title}]({url}) ({date})\n\n"
 
@@ -20,11 +21,6 @@ md = markdown.Markdown(extensions=md_extensions)
 
 
 def convert_and_render(file_paths, page_type):
-    if page_type == "post":
-        template = post_template
-    elif page_type == "meta":
-        template = meta_template
-
     pages = []
 
     for file_path in file_paths:
@@ -39,6 +35,8 @@ def convert_and_render(file_paths, page_type):
 
         if page_type == "post":
             page_data["date"] = md.Meta["date"].pop()
+            page_data["content"] = (md.convert("Written on: " + page_data["date"]) +
+                                    page_data["content"])
 
         file.close()
 
@@ -53,6 +51,7 @@ def convert_and_render(file_paths, page_type):
 
     if page_type == "post":
         return pages 
+
 
 post_files = [os.path.join(posts_dir, file) for file in os.listdir(posts_dir)]
 posts = convert_and_render(post_files, "post")
